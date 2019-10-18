@@ -1,0 +1,122 @@
+--优化 oracle 
+1.硬件配置     硬件优化 内存空间，磁盘空间，带宽，处理器
+2.优化配置文件  oracle配置文件  控制文件、pfile参数文件、spfile参数文件，initOrcl初始化文件 
+    oracle启动过程  shutdown 
+                   nomount
+                   mount
+                   open
+3.优化sql   tablespace 表空间--->段--->区--->块  
+--
+select * from emp;
+select ename,empno,job,mgr emp;
+-- mysql show tables;
+-- 系统表user_tables
+select * from user_tables;
+select table_name from user_tables;
+select column_name from user_tab_columns where table_name='EMP';
+--两张表查询 选择其中一张表作为基表，记录数少的表为基表 
+select * from emp,dept where emp.deptno = dept.deptno and dept.deptno=20;
+select * from emp,dept  where dept.deptno=20 and emp.deptno = dept.deptno ;
+
+select * from user_tab_columns where table_name='EMP' and column_name='SAL';
+select * from user_tab_columns where column_name='SAL' and table_name='EMP' ;
+--三张表关联  中间表作为基表  emp 员工编号 部门编号 dept 部门编号，部门名称 员工考勤表 考勤id 员工id 
+select * from dept,考勤表,emp where emp.id = 考勤表.员工id and emp.deptno = dept.deptno;
+
+select distinct table_name from user_tab_columns ;
+select count(*) from user_tab_columns;--统计表中总共数据行数
+select count(column_name) from user_tab_columns;--统计表中总共数据行数
+select count(column_name) from user_tab_columns;--统计表中某个字段的总函数
+select count(data_precision) from user_tab_columns;-- count函数，null不统计
+select count(table_name) from user_tab_columns;-- count函数，null不统计
+select count(distinct table_name) from user_tab_columns;-- count函数，null不统计
+select * from user_tab_columns;
+
+select * from account;
+insert into account  select * from account;
+--删除重复行数据 
+select a.userid,max(rowid) from account a group by a.userid;
+delete from account where rowid < ( select max(rowid) from account a group by a.userid);
+--drop 删除结构 
+--delete只删除数据 使用 where添加条件，可删除部分数据  可恢复    dml语句
+--truncate清空数据 不能使用where条件，删除所有数据    不记录日志，不能恢复  ddl语句
+drop table account;
+delete from account;
+truncate table account;
+
+select * from emp where empno = 7369;
+--普通索引
+create index idx_emp_empno on emp(empno);
+create table users(
+    id number primary key, 
+    username varchar2(64) unique not null
+    )
+--更新表结构，添加address，并添加索引 （普通索引）    
+alter table users add telphone char(11);
+create unique index idx_users_telphone on users(telphone);
+    
+--主键：不能为空并且唯一（唯一索引）    
+--唯一约束： 可以为null，如果不为空，必须唯一
+insert into users(id,username) values (1,'帅帅');
+insert into users(id,username) values (2,'帅帅');
+insert into users(id) values (4);
+insert into users(username) values ('张帅');
+select * from users;
+update users set address='郑州';
+
+select * from users where address='南京';
+select * from users where username='shuai' and address='南阳';
+
+create index idx_users_username_address on users(username,address);
+
+alter  index SYS_C0011109 invalid;
+
+create unique index 
+
+--1.如何创建索引 
+--2.索引的优点和缺点
+    优点：大量数据条件下，进行局部小量数据搜索时，重复数据量少，可提高查询效率
+    创建索引需要开销的，维护索引也需要开销（内存空间+磁盘空间+IO）
+    代价（cpu+内存+io+网络）
+    
+    
+ oracle 表分区   partition
+ mysql 分库分表
+ 分区：如果数据量非常大（一个表中数据行数超过千万行，就适合做表分区） 
+ 分区：将一个大表，分割为多个小表，对外展示为一个大表，但是内部存储时在多个小表中存储，可以分布在不同表空间，不同文件
+ --创建分区表  分区表的类型：range范围分区  list列表分区 hash分区 复合分区
+ 
+ 
+     CREATE TABLE EMPLOYEE_RANGE_PART
+	    ( EMPNO NUMBER(4,0),
+	      ENAME VARCHAR2(10),
+	      JOB VARCHAR2(9),
+	      MGR NUMBER(4,0),
+	      HIREDATE DATE,
+	      SAL NUMBER(7,2),
+	      COMM NUMBER(7,2),
+	      DEPTNO NUMBER(2,0)
+	   )
+	   PARTITION BY RANGE (HIREDATE)
+	   (
+	   PARTITION EMPLOYEE_PART01 VALUES LESS THAN (TO_DATE('1981-01-01','yyyy-mm-dd'))
+	   TABLESPACE users,
+	   PARTITION EMPLOYEE_PART02 VALUES LESS THAN (TO_DATE('1982-01-01','yyyy-mm-dd'))
+	   TABLESPACE users,
+	   PARTITION EMPLOYEE_PART03 VALUES LESS THAN (MAXVALUE)
+	   TABLESPACE users
+	   );
+    
+    insert into EMPLOYEE_RANGE_PART select * from emp;
+    select * from user_tables;
+    
+    select * from EMPLOYEE_RANGE_PART;
+    
+    explain plan
+    
+    select * from EMPLOYEE_RANGE_PART where HIREDATE = TO_DATE('1980-12-17','yyyy-mm-dd');
+    
+    select * from emp where HIREDATE = TO_DATE('1980-12-17','yyyy-mm-dd');
+    
+    
+    
