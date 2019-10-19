@@ -21,11 +21,11 @@
 						<form action="#" method="post">
 							
 							<div class="form_text_ipt">
-								<input name="username" type="text" placeholder="手机号/邮箱">
+								<input name="username" type="text" placeholder="手机号">
 							</div>
-							<div class="ececk_warning"><span>手机号/邮箱不能为空</span></div><span id="getCode">获取验证码</span>
+							<div class="ececk_warning"><span>手机号</span></div><span id="getCode">获取验证码</span>
 							<div class="form_text_ipt">
-								<input name="password" type="password" placeholder="密码">
+								<input name="password" type="password" placeholder="验证码">
 							</div>
 							<div class="ececk_warning"><span>密码不能为空</span></div>
 							<div class="form_check_ipt">
@@ -65,9 +65,7 @@
 				$("#getCode").click(function () {
 						getCode()
 				});
-				$("#login").click(function () {
 
-				});
 			})
 
 			//获取验证码
@@ -75,7 +73,23 @@
 				$.post("user/getCode",{
 					"telphone":$("input[name=username]").val()
 				},function (data) {
-						console.log(data);
+						if (data!=null && data!=undefined) {
+							$("#login").click(function () {
+								var code = $("input[name=password]").val();
+								var telphone = $("input[name=username]").val();
+								console.log(code);
+								console.log(data);
+								if (data==code){
+									//登录
+									isLogin(telphone,code);
+								}else{
+									alert("验证码过期");
+								}
+							});
+						}else{
+							alert("验证码不正确")
+						}
+
 				},"json");
 			}
 			//验证手机号验证码登录是否成功
@@ -85,9 +99,9 @@
 					"code":code
 				},function (data) {
 						if (data.status==1){
-							alert("登录成功")
+							window.location.href="empList.html";
 						} else {
-							alert("登录失败")
+							alert("登录失败");
 						}
 				},"json");
 			}

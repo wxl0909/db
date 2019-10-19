@@ -87,10 +87,11 @@ public class UsersController {
         //将手机号和code码放入redis,生效时间为5分钟
         Jedis jedis = new Jedis("127.0.0.1",6379);
         jedis.auth("123456");
-
-        jedis.set
-        Map map = new HashMap();
-        return JSON.toJSONString(code);
+        jedis.set("code",code);
+        //设置key的过期时间
+        jedis.expire("code",30000);
+        String codeKey = jedis.get("code");
+        return JSON.toJSONString(codeKey);
     }
 
 
