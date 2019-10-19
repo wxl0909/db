@@ -10,5 +10,4 @@ public class Users {
     private String telphone;
     private String account;
     private String password;
-    private Integer eid;
 }
