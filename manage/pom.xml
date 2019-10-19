@@ -90,16 +90,6 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.33.Final</version>
         </dependency>
-        <!-- 阿里云短信接口-->
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>4.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
