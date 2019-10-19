@@ -2,24 +2,17 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.lanou.manage.mapper.UsersMapper">
-    <select id="userList" resultType="com.lanou.manage.bean.Users">
-        select * from USERS
+    <select id="isLogin" resultType="users" parameterType="users">
+        select id,TELPHONE,ACCOUNT,PASSWORD from USERS
+        <where>
+            <if test="telphone!=null and telphone!=''">
+                and telphone=#{telphone}
+            </if>
+            <if test="account!=null and account!='' and password!=null and password!=''">
+                and account=#{account} and password=#{password}
+            </if>
+        </where>
     </select>
-
-    <select id="findUser" resultType="com.lanou.manage.bean.Users">
-      select * from users where account = #{account}
-    </select>
-
-    <insert id="addUser" parameterType="com.lanou.manage.bean.Users">
-        insert into users(account,telphone,password,eid) values (#{users.account},#{users.telphone},#{users.password},#{users.eid})
-    </insert>
-
-    <update id="updateUser" parameterType="com.lanou.manage.bean.Users">
-        update users set password = #{users.password},eid = #{users.eid} where account = #{users.account}
-    </update>
-
-    <delete id="deleteUser">
-        delete from users where account = #{account}
-    </delete>
 </mapper>
