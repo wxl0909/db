@@ -91,7 +91,7 @@ public class UsersController {
         //设置key的过期时间
         jedis.expire("code",30000);
         String codeKey = jedis.get("code");
-        return JSON.toJSONString(codeKey);
+        return JSON.toJSONString(code);
     }
 
 

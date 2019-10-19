@@ -8,6 +8,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import redis.clients.jedis.Jedis;
 
 public class SendSms {
     public static String sendMsg(String telphone){
@@ -33,6 +34,7 @@ public class SendSms {
         } catch (ClientException e) {
             e.printStackTrace();
         }
+
         return code;
     }
     //随机生产4位验证码
@@ -40,4 +42,5 @@ public class SendSms {
         int c = (int) Math.round(Math.random() * (9999-1000) +1000);
         return String.valueOf(c);
     }
+
 }

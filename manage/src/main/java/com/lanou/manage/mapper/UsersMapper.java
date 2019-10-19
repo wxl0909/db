@@ -22,5 +22,4 @@ public interface UsersMapper {
 
     //登录验证
     Users isLogin(Users users);
-
 }
