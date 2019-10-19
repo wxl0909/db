@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lanou.manage.mapper.UsersMapper">
+    <select id="isLogin" resultType="users" parameterType="users">
+        select id,TELPHONE,ACCOUNT,PASSWORD from USERS
+        <where>
+            <if test="telphone!=null and telphone!=''">
+                and telphone=#{telphone}
+            </if>
+            <if test="account!=null and account!='' and password!=null and password!=''">
+                and account=#{account} and password=#{password}
+            </if>
+        </where>
+    </select>
+</mapper>
