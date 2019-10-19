@@ -7,7 +7,9 @@ import com.lanou.manage.util.SendSms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import redis.clients.jedis.Jedis;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,11 +56,9 @@ public class UsersController {
         int num = usersService.deleteUser(account);
         return JSON.toJSONString(num);
     }
-
-
     //登录验证
     @RequestMapping("isLogin")
-    public String isLogin(Users users){
+    public String isLogin(Users users,String code){
         Map map = new HashMap();
         Users userInfo = null;
         if (users.getAccount()!=null && !users.getAccount().equals("") && users.getPassword()!=null
@@ -73,13 +73,24 @@ public class UsersController {
             if (userInfo!=null){
                 map.put("status",1);
                 map.put("user",userInfo);
-                String code = SendSms.sendMsg(userInfo.getTelphone());
                 map.put("code",code);
             }else{
                 map.put("status",0);
             }
         }
         return JSON.toJSONString(map);
+    }
+    //获取验证码
+    @RequestMapping("getCode")
+    public String getCode(String telphone, HttpSession session){
+        String code = SendSms.sendMsg(telphone);
+        //将手机号和code码放入redis,生效时间为5分钟
+        Jedis jedis = new Jedis("127.0.0.1",6379);
+        jedis.auth("123456");
+
+        jedis.set
+        Map map = new HashMap();
+        return JSON.toJSONString(code);
     }
 
 
