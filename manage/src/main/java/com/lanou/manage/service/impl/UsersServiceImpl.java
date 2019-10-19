@@ -38,4 +38,8 @@ public class UsersServiceImpl implements UsersService {
     public int deleteUser(Integer account) {
         return usersMapper.deleteUser(account);
     }
+    @Override
+    public Users isLogin(Users users) {
+        return usersMapper.isLogin(users);
+    }
 }

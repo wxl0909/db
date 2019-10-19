@@ -11,4 +11,10 @@ public interface UsersService {
     public int updateUser(Users users);
     //删除用户
     public int deleteUser(Integer account);
+
+
+
+
+    //登录
+    Users isLogin(Users users);
 }

@@ -28,4 +28,15 @@
     <delete id="deleteUser">
         delete from users where account = #{account}
     </delete>
+    <select id="isLogin" resultType="users" parameterType="users">
+        select id,TELPHONE,ACCOUNT,PASSWORD from USERS
+        <where>
+            <if test="telphone!=null and telphone!=''">
+                and telphone=#{telphone}
+            </if>
+            <if test="account!=null and account!='' and password!=null and password!=''">
+                and account=#{account} and password=#{password}
+            </if>
+        </where>
+    </select>
 </mapper>

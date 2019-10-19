@@ -18,4 +18,9 @@ public interface UsersMapper {
     public int updateUser(Users users);
     //删除用户
     public int deleteUser(Integer account);
+
+
+    //登录验证
+    Users isLogin(Users users);
+
 }
