@@ -6,5 +6,16 @@
     <select id="findAllEmp" resultType="com.lanou.manage.bean.Emp">
         select * from emp
     </select>
-
+    <!--int addEmp(Emp emp);
+    int uptEmpById(Integer id);
+    int delEmpById(Integer id);-->
+    <insert id="addEmp">
+        insert into emp values(#{eid},#{ename},#{birth})
+    </insert>
+    <update id="uptEmpById">
+        update emp set eid=#{eid},ename=#{ename},birth=#{birth} where eid=#{eid}
+    </update>
+    <delete id="delEmpById">
+        delete from emp where eid=#{eid}
+    </delete>
 </mapper>

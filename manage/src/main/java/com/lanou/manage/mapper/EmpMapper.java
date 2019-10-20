@@ -8,4 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface EmpMapper {
     public Emp findAllEmp();
+    int addEmp(Emp emp);
+    int uptEmpById(Integer eid);
+    int delEmpById(Integer eid);
 }

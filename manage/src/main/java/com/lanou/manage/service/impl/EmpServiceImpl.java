@@ -14,4 +14,19 @@ public class EmpServiceImpl implements EmpService {
     public Emp findAllEmp() {
         return empMapper.findAllEmp();
     }
+
+    @Override
+    public int addEmp(Emp emp) {
+        return empMapper.addEmp(emp);
+    }
+
+    @Override
+    public int uptEmpById(Integer id) {
+        return empMapper.uptEmpById(id);
+    }
+
+    @Override
+    public int delEmpById(Integer id) {
+        return empMapper.delEmpById(id);
+    }
 }
